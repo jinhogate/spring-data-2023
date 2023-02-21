@@ -26,4 +26,12 @@ public class Product {
 	
 	private String description;
 
+	@Override
+	public String toString() {
+		return "Product [productId=" + productId + ", name=" + name + ", cost=" + cost + ", description=" + description
+				+ "]";
+	}
+	
+	
+
 }
