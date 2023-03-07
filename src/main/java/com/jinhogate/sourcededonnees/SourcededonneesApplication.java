@@ -11,11 +11,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jinhogate.sourcededonnees.frameworktest.MyBean;
+import com.jinhogate.sourcededonnees.model.Category;
+import com.jinhogate.sourcededonnees.model.Comment;
 import com.jinhogate.sourcededonnees.model.Product;
+import com.jinhogate.sourcededonnees.service.CategoryService;
+import com.jinhogate.sourcededonnees.service.CommentService;
 import com.jinhogate.sourcededonnees.service.ProductService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 
 @SpringBootApplication
 public class SourcededonneesApplication implements CommandLineRunner {
@@ -26,9 +31,18 @@ public class SourcededonneesApplication implements CommandLineRunner {
 	
 	private ProductService productService;
 	
-	public SourcededonneesApplication(MyBean myBean, ProductService productService) {
+	private CategoryService categoryService;
+	
+	private CommentService commentService;
+	
+	public SourcededonneesApplication(MyBean myBean,
+															ProductService productService,
+															CategoryService categoryService,
+															CommentService commentService) {
 		this.myBean = myBean;
 		this.productService = productService;
+		this.categoryService = categoryService;
+		this.commentService = commentService;
 	}
 
 	public static void main(String[] args) {
@@ -36,6 +50,7 @@ public class SourcededonneesApplication implements CommandLineRunner {
 	}
 
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		log.info("I'am running!");
 		log.info("le mot de passe   ------------> " + myBean.getPassWord());
@@ -50,6 +65,8 @@ public class SourcededonneesApplication implements CommandLineRunner {
 		log.info("Read one product by Id");
 		Product product = this.productService.getOneProductById(1).orElse(null);
 		log.log(Level.INFO, "La description du produit {0}", product);
+		log.info("La liste des commentaires du produit (1)");
+		log.log(Level.INFO, "Commentaire du produit(1) {0}", product.getComments());
 		log.info("Read one product by Id With exception atending");
 		Product productNotExiste = this.productService.getOneProductById(6).orElse(null);
 		log.log(Level.INFO, "La description du produit {0}", productNotExiste);
@@ -61,6 +78,27 @@ public class SourcededonneesApplication implements CommandLineRunner {
 		String message = Boolean.TRUE.equals(this.productService.verifyExistence(2))? "Le produit existe ! " : "Produit non identifié!";
 		log.info(message);
 		
+		log.info("Information sur la categorie");
+		Category categoryObjet = this.categoryService.getOneCategoryById(1).orElse(null);
+		
+		if(categoryObjet!= null) {
+			log.log(Level.INFO, "Les informations sur la categorie : {0}", categoryObjet);
+			
+			log.info("Information sur la categorie + produits");
+			categoryObjet.getProducts().forEach(productElement -> log.log(Level.INFO, "Les produits de la catégorie : {0}", productElement));
+		}
+		
+		log.info("Recuperer un produit et ses catégories");
+		Product productFirst = this.productService.getOneProductById(1).orElse(null);
+		if(productFirst != null) {
+			log.log(Level.INFO, "La liste des catégories du produit (1) {0}",productFirst.getCategories());
+		}
+		
+		log.info("Recupere un commentaire et son produit");
+		Comment commentFirst = this.commentService.getOneCommentById(1).orElse(null);
+		if(commentFirst != null) {
+			log.log(Level.INFO, "La liste des produits du commentaire (1) {0}",commentFirst.getProduct().getName());
+		}
 	}
 
 }
