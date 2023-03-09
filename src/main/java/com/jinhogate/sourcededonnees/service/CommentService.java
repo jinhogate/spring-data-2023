@@ -1,5 +1,6 @@
 package com.jinhogate.sourcededonnees.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class CommentService {
 	
 	public Comment addComment(Comment comment) {
 		return this.commentRepository.save(comment);
+	}
+	
+	public List<Comment> getAllComments(){
+		return this.commentRepository.findAll();
 	}
 }
