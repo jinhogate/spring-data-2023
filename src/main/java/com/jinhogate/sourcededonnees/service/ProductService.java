@@ -38,5 +38,9 @@ public class ProductService {
 	public Boolean verifyExistence(Integer id) {
 		return this.productRepository.existsById(id);
 	}
+	
+	public Product addProduct(Product product) {
+		return this.productRepository.save(product);
+	}
 
 }

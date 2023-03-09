@@ -1,5 +1,6 @@
 package com.jinhogate.sourcededonnees.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -16,8 +17,16 @@ public class CategoryService {
 		this.categoryRepository = categoryRepository;
 	}
 	
+	public List<Category> getAllCategories (){
+		return this.categoryRepository.findAll();
+	}
+	
 	public Optional<Category> getOneCategoryById(Integer id) {
 		return this.categoryRepository.findById(id);
+	}
+	
+	public Category addCategory(Category category) {
+		return this.categoryRepository.save(category);
 	}
 
 }

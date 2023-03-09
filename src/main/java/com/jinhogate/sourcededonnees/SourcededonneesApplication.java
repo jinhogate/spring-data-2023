@@ -99,6 +99,28 @@ public class SourcededonneesApplication implements CommandLineRunner {
 		if(commentFirst != null) {
 			log.log(Level.INFO, "La liste des produits du commentaire (1) {0}",commentFirst.getProduct().getName());
 		}
+		
+		log.info("Création d'une nouvelle catégorie");
+		Category newCategory = new Category();
+		newCategory.setName("Promotion");
+		
+		// Persister la nouvelle catégorie
+		newCategory = this.categoryService.addCategory(newCategory);
+		log.log(Level.INFO, "La nouvelle catégorie : {0}", newCategory);
+		
+		log.info("Création d'un nouveau produit");
+		Product newProduit = new Product();
+		newProduit.setName("Assurance à vie");
+		newProduit.setCost(15);
+		newProduit.setDescription("Assurance à vie, garantie jusqu'au dernier souffle");
+		
+		newCategory.addProduct(newProduit);
+		
+		// Persister le nouveau produit
+		newProduit  = this.productService.addProduct(newProduit);
+		log.log(Level.INFO, "Le nouveau produit : {0}", newProduit);
+		log.log(Level.INFO, "Les categories liées à ce produit : {0}", newProduit.getCategories());
+		
 	}
 
 }
