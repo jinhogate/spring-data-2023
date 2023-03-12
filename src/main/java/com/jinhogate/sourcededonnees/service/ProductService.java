@@ -39,8 +39,28 @@ public class ProductService {
 		return this.productRepository.existsById(id);
 	}
 	
-	public Product addProduct(Product product) {
+	public Product saveProduct(Product product) {
 		return this.productRepository.save(product);
+	}
+	
+	public void deleteProduct(Integer id) {
+		this.productRepository.deleteById(id);
+	}
+	
+	public Optional<Product> getProductByName(String productName){
+		return this.productRepository.findByName(productName);
+	}
+	
+	public List<Product> getProductsByNameOrCost(String productName, Integer productCost){
+		return this.productRepository.findByNameOrCost(productName, productCost);
+	}
+	
+	public List<Product> getProductByNameContaining(String keyWordProductName){
+		return this.productRepository.findByNameContaining(keyWordProductName);
+	}
+	
+	public List<Product> getProductsByCategoriesId(Integer categoryId){
+		return this.productRepository.findByCategoriesCategoryId(categoryId);
 	}
 
 }

@@ -3,6 +3,9 @@ package com.jinhogate.sourcededonnees.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +20,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "produit")
 @Data
 public class Product {
@@ -35,14 +40,13 @@ public class Product {
 	private String description;
 	
 	@OneToMany(
-			mappedBy = "product",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
+			mappedBy = "product"
 			)
 	private List<Comment> comments = new ArrayList<>();
 	
 	@ManyToMany(
-			mappedBy = "products"
+			mappedBy = "products",
+			cascade = CascadeType.ALL
 			)
 	private List<Category> categories = new ArrayList<>();
 

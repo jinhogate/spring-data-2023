@@ -28,4 +28,12 @@ public class CommentService {
 	public List<Comment> getAllComments(){
 		return this.commentRepository.findAll();
 	}
+	
+	public void deleteComment(Integer id) {
+		this.commentRepository.deleteById(id);
+	}
+	
+	public Comment saveComment(Comment comment) {
+		return this.commentRepository.save(comment);
+	}
 }
